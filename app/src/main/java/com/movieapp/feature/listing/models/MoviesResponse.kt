@@ -4,20 +4,16 @@ import com.google.gson.annotations.SerializedName
 
 data class MoviesResponse(
 
-    @SerializedName("Search")
+    @SerializedName("results")
     val listOfMovies: ArrayList<Movie>? = null
 
 )
 
 data class Movie(
-    @SerializedName("Title")
+    @SerializedName("id")
+    val id: String? = null,
+    @SerializedName("poster_path")
+    val poster: String? = null,
+    @SerializedName("title")
     val title: String? = null,
-    @SerializedName("Year")
-    val year: String? = null,
-    @SerializedName("imdID")
-    val imdID: String? = null,
-    @SerializedName("Type")
-    val type: String? = null,
-    @SerializedName("Poster")
-    val poster: String? = null
 )

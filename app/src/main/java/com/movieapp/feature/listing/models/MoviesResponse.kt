@@ -1,6 +1,8 @@
 package com.movieapp.feature.listing.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class MoviesResponse(
 
@@ -9,6 +11,7 @@ data class MoviesResponse(
 
 )
 
+@Parcelize
 data class Movie(
     @SerializedName("id")
     val id: String? = null,
@@ -16,4 +19,6 @@ data class Movie(
     val poster: String? = null,
     @SerializedName("title")
     val title: String? = null,
-)
+    @SerializedName("overview")
+    val overview: String? = null,
+) : Parcelable

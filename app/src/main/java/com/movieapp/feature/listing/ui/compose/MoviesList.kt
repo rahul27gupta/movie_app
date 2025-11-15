@@ -1,6 +1,5 @@
 package com.movieapp.feature.listing.ui.compose
 
-import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,7 @@ import com.movieapp.base.constans.Constants.IMAGE_BASE_URL
 import com.movieapp.feature.listing.models.Movie
 
 @Composable
-fun MoviesGrid(movies: ArrayList<Movie>, onMovieClick: (() -> Unit)) {
+fun MoviesGrid(movies: ArrayList<Movie>, onMovieClick: ((Movie) -> Unit)) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         columns = GridCells.Fixed(2),
@@ -37,7 +36,7 @@ fun MoviesGrid(movies: ArrayList<Movie>, onMovieClick: (() -> Unit)) {
         items(movies) { movie ->
             MovieCard(
                 movie = movie,
-                onMovieClick = { onMovieClick }
+                onMovieClick = { onMovieClick(movie) }
             )
         }
     }
@@ -50,7 +49,9 @@ fun MovieCard(
     movie: Movie,
     onMovieClick: (() -> Unit)
 ) {
-    Column {
+    Column(
+        modifier = Modifier.clickable { onMovieClick.invoke() }
+    ) {
         GlideImage(
             model = IMAGE_BASE_URL.plus(movie.poster),
             contentDescription = "movie-image",
@@ -66,7 +67,6 @@ fun MovieCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp, horizontal = 4.dp)
-                .clickable { onMovieClick.invoke() }
         )
     }
 }

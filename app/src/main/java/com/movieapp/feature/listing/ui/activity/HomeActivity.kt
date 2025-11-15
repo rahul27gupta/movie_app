@@ -44,7 +44,10 @@ class HomeActivity : ComponentActivity() {
 
                         is Resource.Success -> {
                             HomeScreen(
-                                movies = (moviesState as Resource.Success<MoviesResponse?>).data
+                                movies = (moviesState as Resource.Success<MoviesResponse?>).data,
+                                onMovieClick = { movie ->
+                                    startActivity(MovieDetailActivity.newInstance(this, movie))
+                                }
                             )
                         }
 

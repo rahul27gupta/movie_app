@@ -1,5 +1,6 @@
 package com.movieapp.feature.listing.dataSource
 
+import com.movieapp.BuildConfig
 import com.movieapp.feature.listing.models.MoviesResponse
 import com.movieapp.network.ApiServices
 import com.movieapp.network.Resource
@@ -16,7 +17,7 @@ class HomeDataSourceImpl @Inject constructor(
             try {
                 val response = apiService.getTrendingMovies(
                     language = "en-US",
-                    apikey = "9c7b36bb28441a6137e459522f563db5"
+                    apikey = BuildConfig.TMDB_API_KEY
                 )
                 if (response.isSuccessful) {
                     Resource.Success(data = response.body())

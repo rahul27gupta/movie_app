@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">Movie App</string>
+    
+    <!-- Intent Keys -->
+    <string name="key_movie">get_movie</string>
+    
+    <!-- Screen Titles -->
+    <string name="title_movies">Movies</string>
+    <string name="title_movie_detail">Movie Detail</string>
+    
+    <!-- Movie Details -->
+    <string name="unknown_title">Unknown Title</string>
+    <string name="unknown_overview">Unknown Overview</string>
+    <string name="no_movies_available">No movies available</string>
+    <string name="movie_image">movie-image</string>
+    
+    <!-- Buttons -->
+    <string name="retry">Retry</string>
+    
+    <!-- Error Messages -->
+    <string name="error_format">Error: %s</string>
+    
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

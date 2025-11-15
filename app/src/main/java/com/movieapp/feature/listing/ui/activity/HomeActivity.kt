@@ -1,6 +1,5 @@
 package com.movieapp.feature.listing.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,12 +7,13 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.movieapp.MovieApp
 import com.movieapp.base.theme.MoviesAppTheme
+import com.movieapp.feature.listing.models.MoviesResponse
 import com.movieapp.feature.listing.ui.compose.HomeScreen
 import com.movieapp.feature.listing.viewModels.HomeViewModel
 import com.movieapp.feature.listing.viewModels.HomeViewModelFactory
@@ -25,51 +25,40 @@ class HomeActivity : ComponentActivity() {
     lateinit var viewModelFactory: HomeViewModelFactory
     private val viewModel: HomeViewModel by viewModels { viewModelFactory }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, true)
         injectDependencies()
-        setupView()
-        setupObserver()
+        viewModel.getTrendingMovies()
         setContent {
             MoviesAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    val moviesState by viewModel.trendingMovies.collectAsState()
+                    when (moviesState) {
+                        is Resource.Loading -> {
+                            // TODO Loading Screen
+                        }
+
+                        is Resource.Success -> {
+                            HomeScreen(
+                                movies = (moviesState as Resource.Success<MoviesResponse?>).data
+                            )
+                        }
+
+                        is Resource.Error -> {
+                            // TODO Error Screen
+                        }
+                    }
                 }
             }
         }
     }
-
 
     private fun injectDependencies() {
         val appComponent = (application as MovieApp).appComponent
         appComponent.inject(this)
-    }
-
-    private fun setupObserver() {
-        viewModel.observeTrendingMovies().observe(this) {
-            when (it) {
-                is Resource.Loading -> {
-                    // TODO Loading Work
-                }
-
-                is Resource.Success -> {
-                    // TODO Success Work
-                }
-
-                is Resource.Error -> {
-                    // TODO Error Work
-                }
-            }
-        }
-    }
-
-
-    private fun setupView() {
-        viewModel.getTrendingMovies()
     }
 }

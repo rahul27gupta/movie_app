@@ -1,10 +1,10 @@
 package com.movieapp.feature.listing.repository
 
-import androidx.lifecycle.LiveData
 import com.movieapp.feature.listing.models.MoviesResponse
 import com.movieapp.network.Resource
+import kotlinx.coroutines.flow.StateFlow
 
 interface HomeRepository {
-    fun getTrendingMovies()
-    fun observeTrendingMovies(): LiveData<Resource<MoviesResponse?>>
+    val trendingMovies: StateFlow<Resource<MoviesResponse?>>
+    suspend fun getTrendingMovies()
 }

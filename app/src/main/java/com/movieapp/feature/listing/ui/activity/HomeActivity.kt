@@ -4,16 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import com.movieapp.MovieApp
 import com.movieapp.base.theme.MoviesAppTheme
-import com.movieapp.feature.listing.models.MoviesResponse
 import com.movieapp.feature.listing.ui.compose.HomeScreen
 import com.movieapp.feature.listing.viewModels.HomeViewModel
 import com.movieapp.feature.listing.viewModels.HomeViewModelFactory
@@ -30,6 +33,7 @@ class HomeActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         injectDependencies()
         viewModel.getTrendingMovies()
+
         setContent {
             MoviesAppTheme {
                 Surface(
@@ -37,14 +41,24 @@ class HomeActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val moviesState by viewModel.trendingMovies.collectAsState()
+                    val searchQuery by viewModel.searchQuery.collectAsState()
+                    val filteredMovies by viewModel.filteredMovies.collectAsState()
+
                     when (moviesState) {
                         is Resource.Loading -> {
-                            // TODO Loading Screen
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         }
 
                         is Resource.Success -> {
                             HomeScreen(
-                                movies = (moviesState as Resource.Success<MoviesResponse?>).data,
+                                searchQuery = searchQuery,
+                                filteredMovies = filteredMovies,
+                                onSearchQueryChange = viewModel::updateSearchQuery,
                                 onMovieClick = { movie ->
                                     startActivity(MovieDetailActivity.newInstance(this, movie))
                                 }
@@ -52,7 +66,12 @@ class HomeActivity : ComponentActivity() {
                         }
 
                         is Resource.Error -> {
-                            // TODO Error Screen
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Error: ${(moviesState as Resource.Error).message}")
+                            }
                         }
                     }
                 }

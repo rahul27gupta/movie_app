@@ -12,10 +12,16 @@
     <string name="unknown_title">Unknown Title</string>
     <string name="unknown_overview">Unknown Overview</string>
     <string name="no_movies_available">No movies available</string>
+    <string name="no_movies_found">No movies found for \"%s\"</string>
     <string name="movie_image">movie-image</string>
     
     <!-- Buttons -->
     <string name="retry">Retry</string>
+    
+    <!-- Search -->
+    <string name="search_movies">Search movies</string>
+    <string name="search_icon">Search icon</string>
+    <string name="clear_search">Clear search</string>
     
     <!-- Error Messages -->
     <string name="error_format">Error: %s</string>
